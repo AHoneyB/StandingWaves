@@ -17,13 +17,13 @@ class SWave {
     
     ampf = 40;
     kf =1;
-    wf =2;
-    pf =0;
+    wf =0.5;
+    pf = 0;
    
     waves.add(new Wave("forward wave", px, py, ampf,  kf,  wf,  pf, 255, 0, 0));
     ampb = 40;
     kb =1;
-    wb =2;
+    wb =0.5;
     pb =0;
 
     waves.add(new Wave("backwards wave", px, py, ampb,  -kb,  wb,  pb, 0, 0, 255));
