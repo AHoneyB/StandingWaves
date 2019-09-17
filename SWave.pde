@@ -1,7 +1,9 @@
 class SWave {
 
+  ArrayList<Wave> waves;
+  Wave sum;
   float px, py;
-  Wave fWave, bWave ;
+
 
   float ampf, ampb;
   float kf,kb;
@@ -9,28 +11,34 @@ class SWave {
   float pf,pb;
 
   SWave() {
+    waves = new  ArrayList<Wave>();
     px =100;
     py =100;
     
-    ampf = 30;
+    ampf = 40;
     kf =1;
-    wf =1;
+    wf =2;
     pf =0;
-    fWave = new Wave("forward wave", px, py, ampf,  kf,  wf,  pf, 255, 0, 0);
-    
-    ampb = 30;
+   
+    waves.add(new Wave("forward wave", px, py, ampf,  kf,  wf,  pf, 255, 0, 0));
+    ampb = 40;
     kb =1;
-    wb =1;
+    wb =2;
     pb =0;
-    bWave = new Wave("backwards wave", px, py+100, ampb,  -kb,  wb,  pb, 0, 0, 255);
+
+    waves.add(new Wave("backwards wave", px, py, ampb,  -kb,  wb,  pb, 0, 0, 255));
+    
+    sum = new Wave("Standing Wave",px, py+100,0,0,0,waves);
   }
   
   
   void renderSWave(){
-   fWave.renderWave();
-   bWave.renderWave();
+   waves.get(0).renderWave();
+   waves.get(1).renderWave();
+   sum.renderWave();
   
   }
   
+
   
 }

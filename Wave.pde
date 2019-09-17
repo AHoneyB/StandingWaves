@@ -1,6 +1,7 @@
 class Wave {
 
   ArrayList<Complex> wave;
+  ArrayList<Wave> wavelist;
   String s;
   float px, py;
   float w, k, phase;
@@ -12,6 +13,7 @@ class Wave {
   int date;
   float fp=80;
 
+  // Individual Wave constructor
   Wave(String s, float px, float py, float a, float k, float w, float p, float R, float G, float B) {
     wave = new  ArrayList<Complex>();
     this.s = s;
@@ -21,14 +23,33 @@ class Wave {
     this.px = px;
     this.py = py;
 
-    st=2;
+    st=8;
     num = 100;
     time =0;
     position =0;
 
-  setPhysicalValues(a, k, w, p);
-  calcWave();
+    setPhysicalValues(a, k, w, p);
+    calcWave();
   }
+
+  // List of waves constructor
+  Wave(String s, float px, float py, float R, float G, float B, ArrayList<Wave> wavelist) {
+    wave = new  ArrayList<Complex>();
+    this.wavelist = wavelist;
+    this.s = s;
+    this.R = R;
+    this.G = G;
+    this.B = B;
+    this.px = px;
+    this.py = py;
+   
+    st=8;
+    num = 100;
+    time =0;
+    position =0;
+    calcWaveList();
+  }
+
 
   void setPhysicalValues(float a, float k, float w, float p) {
     this.amp = a;
@@ -41,9 +62,9 @@ class Wave {
     wave.clear();
     Float re, im;
     for (int i=0; i<num; i++) {
-      float xx = map(i, 0, num, 0, TWO_PI);
+      float xx = map(i, 0, num-1, 0, TWO_PI);
       for (int j=0; j<num; j++) {
-        float tt = map(j, 0, num, 0, TWO_PI);
+        float tt = map(j, 0, num-1, 0, TWO_PI);
         re = amp *  (float)(Math.cos((k*xx-w*tt+phase)));
         im = amp *  (float)(Math.sin((k*xx-w*tt+phase)));
         Complex c = new Complex(re, im);
@@ -52,6 +73,32 @@ class Wave {
       }
     }
   }
+
+  void calcWaveList() {
+    wave.clear();
+    println("List size ="+wavelist.size());
+    Float re;
+    float im;
+    for (int i=0; i<num; i++) {
+      float xx = map(i, 0, num-1, 0, TWO_PI);
+      for (int j=0; j<num; j++) {
+        float tt = map(j, 0, num-1, 0, TWO_PI);
+        re =0.0;
+        im =0.0;
+       
+        for (int index=0; index<wavelist.size(); index++) {
+          
+          Wave cWave = wavelist.get(index);
+          re += cWave.amp *  (float)(Math.cos((cWave.k*xx-cWave.w*tt+cWave.phase)));
+          im += cWave.amp *  (float)(Math.sin((cWave.k*xx-cWave.w*tt+cWave.phase)));
+          
+        }
+        Complex c = new Complex(re, im);
+        wave.add(c);
+      }
+    }
+  }
+
 
   // ----------
   //MAIN DRAW 
@@ -64,7 +111,7 @@ class Wave {
     if (position>=num) 
       position =0;
 
-   renderSHMform(px, py, R, G, B, dirc);
+    renderSHMform(px, py, R, G, B, dirc);
 
 
 
@@ -94,7 +141,7 @@ class Wave {
       if (dir==0) {
         vertex(pX+st*t+fp, pY+wave.get(t+position*num).im );
       } else {
-     vertex(pX+wave.get(t+position*num).re, pY+st*t+fp);
+        vertex(pX+wave.get(t+position*num).re, pY+st*t+fp);
       }
     }
     endShape();
