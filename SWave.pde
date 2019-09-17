@@ -15,20 +15,20 @@ class SWave {
     px =100;
     py =100;
     
-    ampf = 40;
+    ampf = 20;
     kf =1;
     wf =0.5;
     pf = 0;
    
     waves.add(new Wave("forward wave", px, py, ampf,  kf,  wf,  pf, 255, 0, 0));
-    ampb = 40;
+    ampb = 20;
     kb =1;
     wb =0.5;
     pb =0;
 
     waves.add(new Wave("backwards wave", px, py, ampb,  -kb,  wb,  pb, 0, 0, 255));
     
-    sum = new Wave("Standing Wave",px, py+100,0,0,0,waves);
+    sum = new Wave("Standing Wave",px, py+200,0,0,0,waves);
   }
   
   
